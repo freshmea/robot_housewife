@@ -12,7 +12,7 @@
 * 터미네이터 설치.
 * ros 설치. 
 - - -
-#day2
+# day2
 - - -
 * opoenCR 
 * bringup fail!. check error message
@@ -20,3 +20,29 @@
 	* $ sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
 	  $ sudo udevadm control --reload-rules
   	  $ sudo udevadm trigger
+- - -
+# 2022_11_21
+- - -
+* 스테레오 카메라 설치 
+* 상부 터틀봇3 메뉴퓰레이터 설치.
+* openCR setup 
+	* https://emanual.robotis.com/docs/en/platform/turtlebot3/manipulation/#manipulation
+	* 	$ export OPENCR_PORT=/dev/ttyACM0
+		$ export OPENCR_MODEL=turtlebot3_manipulation
+		$ rm -rf ./opencr_update.tar.bz2
+		$ wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS2/latest/opencr_update.tar.bz2
+		$ tar -xvf opencr_update.tar.bz2
+		$ cd ./opencr_update
+		$ ./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr
+* IMX219-83 스테레오 카메라, 듀얼 IMX219, 8 메가 픽셀, 깊이 비전 및 스테레오 비전
+ 카메라 설치.
+- - - 
+# 2022_11_22
+- - -
+* 카메라 설치.stereo camera imx219-83 
+* jetson nano 에서 인식은 되는데, python code 에서 작동이안됨. 
+* gstreamer 재설치 과정에서 image 망가짐. 다시 설치. 
+* open-manipulator-x 설치 후 turtlebot3_manipulation 을 설치 해야지 작동이 됨. 
+* OpenCR setup 시 sudo dpkg --add-architectur armhf, sudo apt update, sudo apt install libc6:armhf 를 설치하고 openCR_turtlebot3_manipulator 를 설치 해야함. 
+
+
