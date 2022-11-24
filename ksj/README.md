@@ -60,3 +60,11 @@
 - - - - - - -
 # 2022-11-24
 - - - - - - -
+* Turtlebot3 Waffle Pi을 움지역 map그리기
+	* ros2 launch turtlebot3_cartographer cartographer.launch.py 실행
+	* ros2 run nav2_map_server map_saver_cli -f ~/map     --->   map저장
+	* ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=$HOME/map.yaml ----> 저장한 map으로 navigation 실행
+* 목표 위치로 보내기
+	* map에 목적지를 좌표를 찾아 코드로 실행
+* map을 돌아 다니면서 순찰하기
+	*
