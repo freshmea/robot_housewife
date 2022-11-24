@@ -12,9 +12,9 @@
 	  while문을 종료 못함 
 * TurtleBot3 Waffle Pi 조립.
 	* Waffle Pi에 Manipulator 연결
-- - -
-#day2
-- - -
+- - - - - - -
+# 2022-11-22
+- - - - - - -
 * Manipulator opoenCR bringup 시도
 	* bringup fail
 	* TB3 & OpenMANIPULATOR 예제로 다시 bring
@@ -43,3 +43,28 @@
 	* sudo apt install ros-foxy-moveit-servo
 	* [component_container-1] [WARN]: Stale command. Try a larger 'incoming_command_timeout' parameter?
 	[component_container-1] [WARN]: Close to a singularity, decelerating 오류 발생
+- - - - - - - 
+# 2022-11-23
+- - - - - - -
+* OpenManipulator를 OpenCR로 사용했을때 rqt nodr grape를 확인한 결과 delta_twist_cmd와 delta_joint_cmd가 정상 값이 나오지는 것을 확인
+* Manipulator U2D2 사용해서 연결
+	* turtlebot bringupr과 manipulator teleop와 충돌 오류 발생 
+	* 같은 joint_states 사용으로 오류 발생을 확인하여 manipulator 코드에서 joint_states를 다른 이름으로 변경
+	* home/colcon_ws/src/open_manipulator/open_manipulator_x_teleop/open_manipulator_x_teleop/script/test_teleop_keyboard.py에 
+	  109번줄 joint_states -> joint_states2로 변경
+	  home/colcon_ws/src/open_manipulator/open_manipulator_x_controller/src/open_manipulator_x_controller.cpp에 
+	  87번줄 joint_states -> joint_states2로 변경
+	* turtlebot bringup과 manipulator teleop가 오류없이 작동
+* turtlebot3 Waffle Pi를 SLAM을 작동하려 했지만 신호가 약한 와이파이를 사용하여 오류 발생
+	* 다른 와이파이 신호를 사용하여 정상 작동
+- - - - - - -
+# 2022-11-24
+- - - - - - -
+* Turtlebot3 Waffle Pi을 움지역 map그리기
+	* ros2 launch turtlebot3_cartographer cartographer.launch.py 실행
+	* ros2 run nav2_map_server map_saver_cli -f ~/map     --->   map저장
+	* ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=$HOME/map.yaml ----> 저장한 map으로 navigation 실행
+* 목표 위치로 보내기
+	* map에 목적지를 좌표를 찾아 코드로 실행
+* map을 돌아 다니면서 순찰하기
+	*
