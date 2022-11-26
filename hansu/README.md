@@ -20,4 +20,9 @@
 	* $ sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
 	  $ sudo udevadm control --reload-rules
   	  $ sudo udevadm trigger
-[Uploading 1vRSE2dNnCWACLftsmLNVVMbWs0SWTUh2…]()
+#11.24
+
+#11.25
+x-special/nautilus-clipboard
+copy
+google-drive://rlgkstn97@gmail.com/1vRSE2dNnCWACLftsmLNVVMbWs0SWTUh2 
