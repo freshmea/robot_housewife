@@ -33,13 +33,16 @@ rasicam-pub_tb3_pose2d.py-img_compressed2raw.py-aruco_node.py-track_maker2.
 cv_bridge 이용한 ros2 pub,sub 작성 
 
 publising
+
 ![Screenshot from 2022-11-18 11-38-49](https://user-images.githubusercontent.com/112480482/202604390-327d1f9c-015f-42d2-871f-b223c8b27095.png)
 
 subsribe
+
 ![Screenshot from 2022-11-18 11-39-30](https://user-images.githubusercontent.com/112480482/202604399-17a192cd-c418-4142-a64e-fa17a9695889.png)
 
-![video](https://user-images.githubusercontent.com/112480482/202604423-f87d1d74-d445-42a3-a207-0e5c9bc8cff9.png)
 video 출력
+
+![video](https://user-images.githubusercontent.com/112480482/202604423-f87d1d74-d445-42a3-a207-0e5c9bc8cff9.png)
 
 - - -
 11/8 
