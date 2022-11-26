@@ -20,7 +20,7 @@ class ClientFollowPoints(Node):
         super().__init__('client_follow_points')
         self._client = ActionClient(self, FollowWaypoints, '/FollowWaypoints')
         
-        timer_period = 0.1  # seconds
+        timer_period = 1  # seconds
         self.timer = self.create_timer(timer_period, self.spin_method)
         
         qos_profile = QoSProfile(depth=10)
@@ -29,6 +29,30 @@ class ClientFollowPoints(Node):
             self.get_logger().info('service not available, waiting again...')
         self.req = GetParameters.Request()
         self.declare_parameter('navi_go_stop', 'stop')
+    
+    def start(self):
+        param = self.get_parameter('turtle_param').get_parameter_value().string_value
+        
+        if param == 'True':
+            self.set_parameters([rclpy.parameter.Parameter('turtle_param', rclpy.Parameter.Type.STRING, 'False')])
+            rgoal = PoseStamped()
+            rgoal.header.frame_id = "map"
+            rgoal.header.stamp.sec = 0
+            rgoal.header.stamp.nanosec = 0
+            ''' 
+            rgoal.pose.position.z = 0.0
+            rgoal.pose.position.x = .15
+            rgoal.pose.position.y = -0.37
+            '''
+            rgoal.pose.position.z = -0.00143
+            rgoal.pose.position.x = -0.71
+            rgoal.pose.position.y = 1.20
+
+            rgoal.pose.orientation.w = 1.0
+            print(rgoal)
+            mgoal = [rgoal]
+
+            self.send_points(mgoal)
         
     def spin_method(self):
         self.send_request()
@@ -65,54 +89,19 @@ class ClientFollowPoints(Node):
     def feedback_callback(self, feedback_msg):
         feedback = feedback_msg.feedback
         self.get_logger().info('Received feedback: {0}'.format(feedback.current_waypoint))
-        
-    def publish_points(self, x, y, z):
-        rgoal = PoseStamped()
-        rgoal.header.frame_id = "map"
-        rgoal.header.stamp.sec = 0
-        rgoal.header.stamp.nanosec = 0
-        rgoal.pose.position.x = x
-        rgoal.pose.position.y = y
-        rgoal.pose.position.z = z
-        rgoal.pose.orientation.w = 1.0
-        print(rgoal)
-        #mgoal = [rgoal]
-        #follow_points_client.send_points(mgoal)
-        #time.sleep(1)
-
+       
 def main(args=None):
-    client.send_request()
     rclpy.init(args=args)
 
     follow_points_client = ClientFollowPoints()
+    follow_points_client.send_request()
     print('client inited')
+    
+    follow_points_client.start()
+    
+    rclpy.spin(follow_points_client)
     '''
-    while 1:
-	    #rgoal = PoseStamped()
-	    #rgoal.header.frame_id = "map"
-	    #rgoal.header.stamp.sec = 0
-	    #rgoal.header.stamp.nanosec = 0
-	    #rgoal.pose.position.z = -0.00143
-	    #rgoal.pose.orientation.w = 1.0
-	    #rgoal.pose.position.x = 0.292
-	    #rgoal.pose.position.y = -0.398
-	    follow_points_client.publish_points(-0.71, 1.20, -0.00143)
-	    follow_points_client.send_points(mgoal)
-	    follow_points_client.publish_points(0.112, 1.2, -0.00137)
-	    follow_points_client.send_points(mgoal)
-	    follow_points_client.publish_points(0.0857, 0.253, -0.00143)
-	    follow_points_client.send_points(mgoal)
-	    follow_points_client.publish_points(-0.651,0.247, 0.00256)
-	    follow_points_client.send_points(mgoal)
-	    #print(rgoal)
-	    #mgoal = [rgoal]
-	    #follow_points_client.send_points(mgoal)
-	    rclpy.spin(follow_points_client)
-	'''    
-	    
-
-action success
-1. turtle_sim teleop 확인
-2. 실행할때 4개 좌표 이동
-3. while문 삭제
-
+	follow_points_client.start(0.112, 1.2, -0.00137)
+	follow_points_client.start(0.0857, 0.253, -0.00143)
+	follow_points_client.start(-0.651,0.247, 0.00256)
+	'''
