@@ -20,10 +20,14 @@
 	* $ sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
 	  $ sudo udevadm control --reload-rules
   	  $ sudo udevadm trigger
+- - -
 #11.24
+- - -
 https://github.com/clydemcqueen/opencv_cam
 ~ 등등 예제 실행
+- - -
 #11.25
+- - -
 https://github.com/clydemcqueen/opencv_cam 예제 활용해 publisher하는 노드(C++)를 통해 기존에 만들어놓은 subscriber(python)을 통해 받으려 시도
 compressd_image를 image_raw로 받는 이미지 형태 변화하니 받아짐
 ![20221125_124537](https://user-images.githubusercontent.com/112480482/204091952-dabe8bc3-1a5c-4c59-b852-dedbec73640b.jpg)
