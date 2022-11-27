@@ -1,107 +1,95 @@
 import rclpy, sys
 from rclpy.node import Node
-from geometry_msgs.msg import PoseStamped 
-from rclpy.action import ActionClient
-from action_msgs.msg import GoalStatus
-from nav2_msgs.action import FollowWaypoints
-from rcl_interfaces.srv import SetParameters, GetParameters, ListParameters
-from rclpy.exceptions import ParameterNotDeclaredException
-from rclpy.parameter import Parameter
 from rclpy.qos import QoSProfile
+
+from geometry_msgs.msg import Twist
+from rclpy.exceptions import ParameterNotDeclaredException
+from rcl_interfaces.msg import ParameterType
 from std_msgs.msg import String
-from rcl_interfaces.msg import ParameterValue
-#from rcl_interfaces.msg import Parameter, ParameterType
+from param_tutorial.getchar import Getchar
 
-# from rclpy.duration import Duration # Handles time for ROS 2
- 
-class ClientFollowPoints(Node):
+from rcl_interfaces.srv import SetParameters, GetParameters, ListParameters
+from rclpy.parameter import Parameter
 
+class ByParam(Node):
     def __init__(self):
-        super().__init__('client_follow_points')
-        self._client = ActionClient(self, FollowWaypoints, '/FollowWaypoints')
-        
-        timer_period = 1  # seconds
-        self.timer = self.create_timer(timer_period, self.spin_method)
-        
+        super().__init__('move_by_param')
         qos_profile = QoSProfile(depth=10)
-        self.cli = self.create_client(GetParameters, 'move_by_param/get_parameters')
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.req = GetParameters.Request()
-        self.declare_parameter('navi_go_stop', 'stop')
+        self.pub = self.create_publisher(Twist, '/turtle1/cmd_vel', qos_profile)
+        self.tw = Twist()
+        timer_period = 1  # seconds
+        #self.timer = self.create_timer(timer_period, self.move_turtle)
     
-    def start(self):
-        param = self.get_parameter('turtle_param').get_parameter_value().string_value
-        
-        if param == 'True':
-            self.set_parameters([rclpy.parameter.Parameter('turtle_param', rclpy.Parameter.Type.STRING, 'False')])
-            rgoal = PoseStamped()
-            rgoal.header.frame_id = "map"
-            rgoal.header.stamp.sec = 0
-            rgoal.header.stamp.nanosec = 0
-            ''' 
-            rgoal.pose.position.z = 0.0
-            rgoal.pose.position.x = .15
-            rgoal.pose.position.y = -0.37
-            '''
-            rgoal.pose.position.z = -0.00143
-            rgoal.pose.position.x = -0.71
-            rgoal.pose.position.y = 1.20
+        self.cli = self.create_client(SetParameters, 'client_follow_points/set_parameters')
+        self.declare_parameter('go_turtle', 'stop')
+        self.req = SetParameters.Request()
+    '''
+    def send_request(self, key):
+        if key == 'go1':
+            self.req.parameters = [Parameter(name='go_turtle', value='go1').to_parameter_msg()]
+            #self.future = self.cli.call_async(self.req)
+        elif key == 'go2':
+            self.req.parameters = [Parameter(name='go_turtle', value='go2').to_parameter_msg()]
+            #self.future = self.cli.call_async(self.req)
+    '''
+    '''
+    def move_turtle(self):
+        param = self.get_parameter('go_turtle').get_parameter_value().string_value
+        if param =='go1':
+            self.tw.linear.x = 0.5
+            self.tw.angular.z  = 0.25
+        elif param =='go2':
+            self.tw.linear.x = 0.0
+            self.tw.angular.z  = 0.0
+        else:
+            pass
+        self.pub.publish(self.tw)
 
-            rgoal.pose.orientation.w = 1.0
-            print(rgoal)
-            mgoal = [rgoal]
-
-            self.send_points(mgoal)
-        
-    def spin_method(self):
-        self.send_request()
-        response = self.future.result()
-        print(response.values[0]._string_value)
-        
-    def send_request(self):
-        self.req.names = ['navi_go_stop']
-        self.future = self.cli.call_async(self.req)
-
-    def send_points(self, points):
-        msg = FollowWaypoints.Goal()
-        msg.poses = points
-
-        self._client.wait_for_server()
-        self._send_goal_future = self._client.send_goal_async(msg, feedback_callback=self.feedback_callback)
-        self._send_goal_future.add_done_callback(self.goal_response_callback)
-
-    def goal_response_callback(self, future):
-        goal_handle = future.result()
-        if not goal_handle.accepted:
-            self.get_logger().info('Goal rejected')
-            return
-
-        self.get_logger().info('Goal accepted')
-
-        self._get_result_future = goal_handle.get_result_async()
-        self._get_result_future.add_done_callback(self.get_result_callback)
-
-    def get_result_callback(self, future):
-        result = future.result().result
-        self.get_logger().info('Result: {0}'.format(result.missed_waypoints))
-
-    def feedback_callback(self, feedback_msg):
-        feedback = feedback_msg.feedback
-        self.get_logger().info('Received feedback: {0}'.format(feedback.current_waypoint))
+        self.get_logger().info('turtle %s!' % param)
        
+        
+        self.set_parameters([rclpy.parameter.Parameter(
+                        'go_turtle',
+                        rclpy.Parameter.Type.STRING,
+                        'go'
+                    )])
+    '''
+'''
+def main():
+    rclpy.init()
+    node = ByParam()
+    node.move_turtle()
+
+    rclpy.spin(node)
+'''
 def main(args=None):
     rclpy.init(args=args)
 
-    follow_points_client = ClientFollowPoints()
-    follow_points_client.send_request()
-    print('client inited')
+    node = ByParam()
     
-    follow_points_client.start()
+    print('test')
+    try:
+        kb = Getchar()
+        key =''
+        while rclpy.ok():
+            key = kb.getch()
+            if key == '1':
+                node.req.parameters = [Parameter(name='go_turtle', value='go1').to_parameter_msg()]
+                node.future = node.cli.call_async(node.req)
+            elif key == '2':
+                node.req.parameters = [Parameter(name='go_turtle', value='go2').to_parameter_msg()]
+                node.future = node.cli.call_async(node.req)
+            else:
+                pass
     
-    rclpy.spin(follow_points_client)
-    '''
-	follow_points_client.start(0.112, 1.2, -0.00137)
-	follow_points_client.start(0.0857, 0.253, -0.00143)
-	follow_points_client.start(-0.651,0.247, 0.00256)
-	'''
+    except KeyboardInterrupt:
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    
+            node.destroy_node()
+            rclpy.shutdown()
+             
+    rclpy.spin(node)
+if __name__ == '__main__':
+    main()
