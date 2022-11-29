@@ -76,9 +76,6 @@ def main(args=None):
             if key == '1':
                 node.req.parameters = [Parameter(name='go_turtle', value='go1').to_parameter_msg()]
                 node.future = node.cli.call_async(node.req)
-            elif key == '2':
-                node.req.parameters = [Parameter(name='go_turtle', value='go2').to_parameter_msg()]
-                node.future = node.cli.call_async(node.req)
             else:
                 pass
     
