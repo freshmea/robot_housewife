@@ -113,7 +113,7 @@ Turtlebot3_waffle
 
 5. ROS 패키지를 설치하고 빌드.
 
-	$ sudo apt install python3-argcomplete python3-colcon-common-extensions libboost-system-dev build-             essential				     //colcon build system 설치
+	$ sudo apt install python3-argcomplete python3-colcon-common-extensions libboost-system-dev build-   essential				     //colcon build system 설치
 	$ sudo apt install ros-foxy-hls-lfcd-lds-driver	//레이저 드라이버 설치
 	$ sudo apt install ros-foxy-turtlebot3-msgs	//터틀봇3 메세지(토픽,서비스,액션) 설치
 	$ sudo apt install ros-foxy-dynamixel-sdk	//다이나믹셀 모터드라이버 설치
