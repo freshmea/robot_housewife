@@ -109,6 +109,23 @@ class ClientFollowPoints(Node):
             mgoal = [rgoal]
 
             self.send_points(mgoal)
+            
+        elif param == 'stop':
+            print('stop move')
+            rgoal = PoseStamped()
+            rgoal.header.frame_id = "map"
+            rgoal.header.stamp.sec = 0
+            rgoal.header.stamp.nanosec = 0
+            
+            rgoal.pose.position.z = -0.00143
+            rgoal.pose.position.x = -1.09
+            rgoal.pose.position.y = 0.483
+
+            rgoal.pose.orientation.w = 1.0
+            print(rgoal)
+            mgoal = [rgoal]
+
+            self.send_points(mgoal)
         
         else:
             pass
@@ -145,17 +162,14 @@ class ClientFollowPoints(Node):
                 #self.req_set.parameters = [Parameter(name='navi_go_stop', value='go2').to_parameter_msg()]
                 #self.future = self.cli_set.call_async(self.req_set) 
             elif param == "go2":
-                self.set_parameters([rclpy.parameter.Parameter('navi_go_stop', rclpy.Parameter.Type.STRING, 'go3')])
-                #self.req_set.parameters = [Parameter(name='navi_go_stop', value="go3").to_parameter_msg()]
-                #self.future = self.cli_set.call_async(self.req_set) 
+                self.set_parameters([rclpy.parameter.Parameter('navi_go_stop', rclpy.Parameter.Type.STRING, 'go3')]) 
             elif param == "go3":
                 self.set_parameters([rclpy.parameter.Parameter('navi_go_stop', rclpy.Parameter.Type.STRING, 'go4')])
-                #self.req_set.parameters = [Parameter(name='navi_go_stop', value="go4").to_parameter_msg()]
-                #self.future = self.cli_set.call_async(self.req_set) 
             elif param == "go4":
                 self.set_parameters([rclpy.parameter.Parameter('navi_go_stop', rclpy.Parameter.Type.STRING, 'go1')])
-                #self.req_set.parameters = [Parameter(name='navi_go_stop', value="go1").to_parameter_msg()]
-                #self.future = self.cli_set.call_async(self.req_set) 
+            elif param == "stop":
+                self.set_parameters([rclpy.parameter.Parameter('navi_go_stop', rclpy.Parameter.Type.STRING, 'go1')])
+                
                 self.get_logger().info('Result: {0}'.format(result.missed_waypoints))
             else:
                 pass
