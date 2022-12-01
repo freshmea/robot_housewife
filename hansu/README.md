@@ -78,15 +78,16 @@ compressd_image를 image_raw로 받는 이미지 형태 변화하니 받아짐
 ![20221125_124748](https://user-images.githubusercontent.com/112480482/204091955-f4bfcc37-20d0-4237-9fe9-09733cc3cf83.jpg)
 허나 위와 같이 초록색 화면뜸
 
+
+
 - - -
-#11.26
+#11.27
 - - -
 opencv_cam node 코드에 right,left 화면이 나오는 simple_camera 코드로 변형하여 opencv_cam을 실행할 수 있게함
 
-#11.27
-
+- - -
 11. 29 
-
+- - -
 저장공간 부족으로 포맷
 xubuntu_20.04 image 굽기 
 터틀봇3 폭시 https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/#sbc-setup
