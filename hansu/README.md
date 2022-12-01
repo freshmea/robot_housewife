@@ -78,8 +78,16 @@ compressd_image를 image_raw로 받는 이미지 형태 변화하니 받아짐
 ![20221125_124748](https://user-images.githubusercontent.com/112480482/204091955-f4bfcc37-20d0-4237-9fe9-09733cc3cf83.jpg)
 허나 위와 같이 초록색 화면뜸
 
-11. 29 
 
+
+- - -
+#11.27
+- - -
+opencv_cam node 코드에 right,left 화면이 나오는 simple_camera 코드로 변형하여 opencv_cam을 실행할 수 있게함
+
+- - -
+11. 29 
+- - -
 저장공간 부족으로 포맷
 xubuntu_20.04 image 굽기 
 터틀봇3 폭시 https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/#sbc-setup
@@ -113,7 +121,7 @@ Turtlebot3_waffle
 
 5. ROS 패키지를 설치하고 빌드.
 
-	$ sudo apt install python3-argcomplete python3-colcon-common-extensions libboost-system-dev build-             essential				     //colcon build system 설치
+	$ sudo apt install python3-argcomplete python3-colcon-common-extensions libboost-system-dev build-   essential				     //colcon build system 설치
 	$ sudo apt install ros-foxy-hls-lfcd-lds-driver	//레이저 드라이버 설치
 	$ sudo apt install ros-foxy-turtlebot3-msgs	//터틀봇3 메세지(토픽,서비스,액션) 설치
 	$ sudo apt install ros-foxy-dynamixel-sdk	//다이나믹셀 모터드라이버 설치
@@ -211,6 +219,19 @@ opencr과 manipulator 중 usb 0,1이 분별이 안돼, manipulator의 연결을 
 	$ ros2 run open_manipulator_x_teleop teleop_keyboard
 실행하였으나 manipulator 정상 작동안함. 빨간불들어오며 모터에 힘이 안들어감. 토크 조여주고 u2d2 재부팅 후 bringup 후 실행하니 정상 작동
 
-21. 
-	
+21. urtlebot3 의 브링업과 open_manipulator 의 브링업이 충돌을일으김. (토픽명, joint_states)
+	ros2 launch turtlebot3_bringup robot.launch.py
+	ros2 launch open_manipulator_x_controller open_manipulator_x_controller.launch.py
+	teleop_keyboard.py -> 109 joint_states --->joint_states2
+	src/open_manipulator/open_manipulator_x_controller/src/open_manipulator_x_controller.cpp ->87 joint_states --->joint_States2
+	topic 이름을 바꾸어서 해결
+	!빌드해야 적용 
 
+22. git clone -b foxy https://github.com/ros-perception/image_comon.git 하여 카메라 캘러브레이션 파서 설치
+
+23. 기존의 subscriber(webcam_sub.py)에
+	self.subscription = self.create_subscription(Image, 
+                'image_raw'를 'image_raw1'로 변경
+24. from cv_bridge import CvBridge 보다 import cv2를 먼저 import한다. 결과 영상 나옴
+
+25. 
