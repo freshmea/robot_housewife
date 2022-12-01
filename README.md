@@ -41,8 +41,10 @@
 - - -
 * 카메라 설치.stereo camera imx219-83 
 * jetson nano 에서 인식은 되는데, python code 에서 작동이안됨. 
-* gstreamer 재설치 과정에서 image 망가짐. 다시 설치. 
+* gstreamer 재설치 과정에서 image 망가짐. 다시 설치. --> 설치과정 hansu.README.md 88~213
 * open-manipulator-x 설치 후 turtlebot3_manipulation 을 설치 해야지 작동이 됨. 
 * OpenCR setup 시 sudo dpkg --add-architectur armhf, sudo apt update, sudo apt install libc6:armhf 를 설치하고 openCR_turtlebot3_manipulator 를 설치 해야함. 
+* 카메라 코드 변경(gstream 설정과 stereo camera --> image_raw1, image_raw2, camera_info 토픽 발행) robot_ws/src/opencv_cam/src/opencv_cam_node.cpp 와 opencv_cam_node_hpp 변경.
+* 
 
 
